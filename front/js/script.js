@@ -3,9 +3,7 @@
 
 fetch("http://localhost:80/api/products")
 .then((res) => res.json())
-.then((data) => {
-   return addProduct(data)
-})
+.then((data) => addProduct(data))
 
 //2
 /******************************************************
@@ -16,12 +14,16 @@ plusieurs autres fonctions annexes.********************
 
 
 
-/*************************************************************
-* Fonction principale utilisant deux fonctions accessoires****
-*************************************************************/
-
+/******************************************************************
+* Fonction principale utilisant plusieurs fonctions accessoires****
+******************************************************************/
 
 function addProduct(data){
+
+    /* Boucle forEach pour appliquer la fonction à tous les objets de l'array data.
+    Plus lisible, et appropriée dans le contexte, car on ne cherche pas à appliquer
+    la boucle dans des conditions particulières. Il faut simplement traverser tout l'array data*/
+    data.forEach((dataCanapé) => {
 
     /*const id = data[0]._id
     const imageUrl = data[0].imageUrl
@@ -29,41 +31,37 @@ function addProduct(data){
     const name = data[0].name
     const description = data[0].description*/
 
-    //On résume le tout en une ligne (voir ci-dessus pour le détail)
-
-    //On prend la valeur des clefs de l'objet "data" et les transfère
-    //en une seule fois sur nos constantes.
-    const { id, imageUrl, altTxt, name, description } = data[0]
+    //On résume le tout ci-dessous en une ligne 
+    const { id, imageUrl, altTxt, name, description } = dataCanapé
+    //Ainsi, on a pris la valeur de chaque objet dataCanapé dans l'array data et
+    //on les a transférées en une seule fois sur nos constantes.
 
     const anchor = createAnchor(id)
-    /*Après refactoring, on crée l'article directement
-    ici sans passer par une fonction secondaire. */
-    
+    /*Refactoring : on crée l'article directement
+    ici sans passer par une fonction secondaire, ce 
+    qui prenait plusieurs lignes pour pas grand-chose. */
     const article = document.createElement ("article")
+
     const image = createImage(imageUrl, altTxt)
     const h3 = createH3(name)
     const p = createParagraph(description)
 
     appendElementsToArticle(article, image, h3, p)
     appendArticleToAnchor(anchor, article)
-}
-
-function appendElementsToArticle(article, image, h3, p) {
-    /* On utilise append au lieu d'appendChild pour mettre image, h3 et p
-    en une seule ligne à l'intérieur d'article. */
-    article.append(image, h3, p)
+    })
 }
 
 
-
-/***********************
-*FONCTIONS ACCESSOIRES**
-***********************/
-
+/**********************************************************************************
+*FONCTIONS ACCESSOIRES (pourquoi plusieurs petites fonctions ? Parce que cela nous*
+*permet, ensuite, de corriger, de modifier, et même de comprendre plus facilement *
+*l'ensemble du code.)**************************************************************
+**********************************************************************************/
 
 /******************************************
 * fonction pour créer l'anchor selon l'id *
 ******************************************/
+
 function createAnchor(id) {
     const anchor = document.createElement("a")
     anchor.href = "./product.html?id=" + id
@@ -81,8 +79,17 @@ function appendArticleToAnchor(anchor, article){
     if (items != null) {
     items.appendChild(anchor)
     anchor.appendChild(article)
-    console.log("éléments ajoutés à items", items)
     }
+}
+
+
+/********************************************************************************
+* fonction pour append les éléments à l'intérieur de l'article ******************
+********************************************************************************/
+function appendElementsToArticle(article, image, h3, p) {
+    /* On utilise append au lieu d'appendChild pour mettre image, h3 et p
+    en une seule ligne à l'intérieur d'article. */
+    article.append(image, h3, p)
 }
 
 
@@ -106,7 +113,6 @@ function createH3(name) {
     H3.textContent = name
     H3.classList.add("productName")
     return H3
-
 }
 
 /*************************************************
@@ -119,5 +125,4 @@ function createParagraph(description) {
     p.textContent = description
     p.classList.add("productDescription")
     return p
-
 }
