@@ -22,20 +22,36 @@ plusieurs autres fonctions annexes.********************
 
 
 function addProduct(data){
-    const id = data[0]._id
+
+    /*const id = data[0]._id
     const imageUrl = data[0].imageUrl
     const altTxt = data[0].altTxt
     const name = data[0].name
+    const description = data[0].description*/
 
-    const image = createImage(imageUrl, altTxt)
+    //On résume le tout en une ligne (voir ci-dessus pour le détail)
+
+    //On prend la valeur des clefs de l'objet "data" et les transfère
+    //en une seule fois sur nos constantes.
+    const { id, imageUrl, altTxt, name, description } = data[0]
+
     const anchor = createAnchor(id)
-    const article = createArticle()
+    /*Après refactoring, on crée l'article directement
+    ici sans passer par une fonction secondaire. */
+    
+    const article = document.createElement ("article")
+    const image = createImage(imageUrl, altTxt)
     const h3 = createH3(name)
+    const p = createParagraph(description)
 
-    article.appendChild(image)
-    article.appendChild(h3)
+    appendElementsToArticle(article, image, h3, p)
+    appendArticleToAnchor(anchor, article)
+}
 
-    appendChildren(anchor, article)
+function appendElementsToArticle(article, image, h3, p) {
+    /* On utilise append au lieu d'appendChild pour mettre image, h3 et p
+    en une seule ligne à l'intérieur d'article. */
+    article.append(image, h3, p)
 }
 
 
@@ -58,7 +74,7 @@ function createAnchor(id) {
 * fonction pour vérifier qu'il existe bien un item, puis pour le lier à l'anchor*
 ********************************************************************************/
 
-function appendChildren(anchor, article){
+function appendArticleToAnchor(anchor, article){
     const items = document.querySelector ("#items")
     /* selectbyid aurait également pu fonctionner pour aller chercher #items.
     queryselector est plus généraliste, il ne fonctionne pas qu'avec les ID. */
@@ -69,24 +85,6 @@ function appendChildren(anchor, article){
     }
 }
 
-/******************************
-*fonction pour créer article***
-******************************/
-
-function createArticle() {
-    const article = document.createElement ("article")
-    const H3 = createH3()
-    const p = createParagraph()
-
-    //article.appendChild(image)
-    //article.appendChild(H3)
-    //article.appendChild(p)
-    console.log(article)
-
-    return article
-
-
-}
 
 /******************************
 *fonction pour créer l'image***
@@ -106,10 +104,20 @@ function createImage(imageUrl, altTxt){
 function createH3(name) {
     const H3 = document.createElement("H3")
     H3.textContent = name
-    H3.classList.add("productname")
+    H3.classList.add("productName")
     return H3
 
 }
 
-function createParagraph() {
+/*************************************************
+*fonction pour créer un paragraphe et lui donner**
+*une classe***************************************
+*************************************************/
+
+function createParagraph(description) {
+    const p = document.createElement("p")
+    p.textContent = description
+    p.classList.add("productDescription")
+    return p
+
 }
