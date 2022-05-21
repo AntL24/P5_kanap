@@ -1,5 +1,8 @@
 //1
-/*on récupère la liste des products*/
+/*on récupère la liste des products grâce à fetch,
+on y applique la fonction json pour la rendre utilisable,
+puis on appelle la fonction addProduct crée plus bas, avec
+la liste des products en paramètre. */
 
 fetch("http://localhost:80/api/products")
 .then((res) => res.json())
@@ -20,23 +23,23 @@ plusieurs autres fonctions annexes.********************
 
 function addProduct(data){
 
-    /* Boucle forEach pour appliquer la fonction à tous les objets de l'array data.
+    /* Boucle forEach pour appliquer la fonction à tous les objets de data.
     Plus lisible, et appropriée dans le contexte, car on ne cherche pas à appliquer
     la boucle dans des conditions particulières. Il faut simplement traverser tout l'array data*/
-    data.forEach((dataCanapé) => {
+    data.forEach((datakanap) => {
 
-    /*const id = data[0]._id
+    /*const _id = data[0]._id
     const imageUrl = data[0].imageUrl
     const altTxt = data[0].altTxt
     const name = data[0].name
     const description = data[0].description*/
 
     //On résume le tout ci-dessous en une ligne 
-    const { id, imageUrl, altTxt, name, description } = dataCanapé
+    const { _id, imageUrl, altTxt, name, description } = datakanap
     //Ainsi, on a pris la valeur de chaque objet dataCanapé dans l'array data et
     //on les a transférées en une seule fois sur nos constantes.
 
-    const anchor = createAnchor(id)
+    const anchor = createAnchor(_id)
     /*Refactoring : on crée l'article directement
     ici sans passer par une fonction secondaire, ce 
     qui prenait plusieurs lignes pour pas grand-chose. */
@@ -62,9 +65,9 @@ function addProduct(data){
 * fonction pour créer l'anchor selon l'id *
 ******************************************/
 
-function createAnchor(id) {
+function createAnchor(_id) {
     const anchor = document.createElement("a")
-    anchor.href = "./product.html?id=" + id
+    anchor.href = "./product.html?id=" + _id
     return anchor
 }
 
@@ -73,12 +76,12 @@ function createAnchor(id) {
 ********************************************************************************/
 
 function appendArticleToAnchor(anchor, article){
-    const items = document.querySelector ("#items")
+    const items = document.querySelector ("#items");
     /* selectbyid aurait également pu fonctionner pour aller chercher #items.
     queryselector est plus généraliste, il ne fonctionne pas qu'avec les ID. */
     if (items != null) {
-    items.appendChild(anchor)
-    anchor.appendChild(article)
+    items.appendChild(anchor);
+    anchor.appendChild(article);
     }
 }
 
@@ -94,7 +97,7 @@ function appendElementsToArticle(article, image, h3, p) {
 
 
 /******************************
-*fonction pour créer l'image***
+*fonction pour créer l'image (préciser pour ne pas passer pour un con)***
 ******************************/
 
 function createImage(imageUrl, altTxt){
