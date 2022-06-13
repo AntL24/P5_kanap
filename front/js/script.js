@@ -5,7 +5,7 @@ json pour la rendre utilisable, puis on attend encore d'obtenir
 la réponse data, avant d'appeler la fonction addProduct crée
 plus bas, avec la liste des products en paramètre. */
 
-fetch("http://localhost:80/api/products")
+fetch("http://localhost:3000/api/products")
 .then((res) => res.json())
 .then((data) => addProduct(data));
 
@@ -35,7 +35,8 @@ function addProduct(data){
     //en une ligne grâce au destructuring, en les renommant de manière plus spécifique grâce
     //à const {variable: nouveaunomvariable, etc} = selectedArray
 
-    const { _id: selectedKanap__id, imageUrl: selectedKanap_imageUrl, altTxt: selectedKanap_altTxt, name: selectedKanap_name, description: selectedKanap_description  } = selectedKanap;
+    const { _id: selectedKanap__id, imageUrl: selectedKanap_imageUrl, altTxt: selectedKanap_altTxt,
+    name: selectedKanap_name, description: selectedKanap_description  } = selectedKanap;
 
     //Ainsi, on a pris la valeur de chaque element dans l'array data et
     //on les a transférées en une seule fois sur nos constantes _id, imageUrl etc.
